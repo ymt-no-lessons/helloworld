@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>いろいろなHello World</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kosugi Maru', 'Yu Gothic', sans-serif;
+            background: #fef6e4;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 400px;
+            margin: 40px auto 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 6px 24px rgba(220, 170, 90, 0.18), 0 1.5px 4px rgba(220,170,90,0.12);
+            padding: 32px 28px 28px 28px;
+            text-align: center;
+            position: relative;
+        }
+        .dog-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #ffdc91;
+            margin: -56px auto 10px auto;
+            box-shadow: 0 4px 14px rgba(220, 170, 90, 0.22);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .dog-icon img {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffe8b3;
+        }
+        h1 {
+            color: #bf942c;
+            font-size: 2rem;
+            margin-top: 0.5em;
+            margin-bottom: 0.8em;
+            letter-spacing: 0.04em;
+        }
+        select, button {
+            font-size: 1rem;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1.5px solid #ffe8b3;
+            background: #fff7da;
+            margin: 8px 0;
+            outline: none;
+            transition: border 0.2s;
+        }
+        select:focus, button:focus {
+            border: 1.5px solid #bf942c;
+        }
+        button {
+            background: #ffd567;
+            color: #6e5218;
+            font-weight: bold;
+            cursor: pointer;
+            margin-left: 8px;
+            box-shadow: 0 2px 8px rgba(220,170,90,0.08);
+            transition: background 0.15s;
+        }
+        button:hover {
+            background: #ffe09f;
+        }
+        label {
+            font-size: 1.1rem;
+            color: #7d6520;
+        }
+        h2 {
+            margin-top: 1.6em;
+            font-size: 1.7rem;
+            color: #ff914d;
+            background: #fff3df;
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 16px;
+            box-shadow: 0 2px 6px rgba(255, 145, 77, 0.11);
+        }
+        /* レスポンシブ */
+        @media (max-width: 500px) {
+            .container {
+                max-width: 95vw;
+                padding: 12vw 2vw 8vw 2vw;
+            }
+            h1 {
+                font-size: 1.35rem;
+            }
+            h2 {
+                font-size: 1.12rem;
+                padding: 7px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dog-icon">
+            <!-- 柴犬アイコン素材例: https://www.ac-illust.com/main/detail.php?id=24587245 -->
+            <img src="static/chaco.png" alt="犬のアイコン">
+        </div>    
+        <h1>世界の「Hello World」</h1>
+        <form method="post">
+            <label for="country">言語を選んでね：</label><br>
+            <select id="country" name="country">
+                {% for key, val in country_names.items() %}
+                    <option value="{{ key }}" {% if key == selected %}selected{% endif %}>{{ val }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">表示！</button>
+        </form>
+        {% if message %}
+            <h2>{{ message }}</h2>
+        {% endif %}
+    </div>
+
+    <button type="button" onclick="playVoice()">🔊 音声で聴く</button>
+
+<script>
+function playVoice() {
+    // 表示中のHello Worldを取得
+    const msg = document.querySelector('h2')?.innerText;
+    if (!msg) return;
+    const utter = new window.SpeechSynthesisUtterance(msg);
+
+    // 言語コードを設定（選択値によって切り替えも可能）
+    const select = document.getElementById("country");
+    const langMap = {
+        'english': 'en-US',
+        'japan': 'ja-JP',
+        'french': 'fr-FR',
+        'spanish': 'es-ES',
+        'german': 'de-DE',
+        'chinese': 'zh-CN',
+        'korean': 'ko-KR',
+        'italian': 'it-IT',
+        'russian': 'ru-RU',
+        'arabic': 'ar-SA',
+    };
+    utter.lang = langMap[select.value] || 'en-US';
+
+    window.speechSynthesis.speak(utter);
+}
+</script>
+
+</body>
+</html>
