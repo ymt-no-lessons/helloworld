@@ -122,6 +122,38 @@
         {% if message %}
             <h2>{{ message }}</h2>
         {% endif %}
+
+        <button type="button" onclick="playVoice()">🔊 音声で聴く</button>
     </div>
+
+    
+
+<script>
+function playVoice() {
+    // 表示中のHello Worldを取得
+    const msg = document.querySelector('h2')?.innerText;
+    if (!msg) return;
+    const utter = new window.SpeechSynthesisUtterance(msg);
+
+    // 言語コードを設定（選択値によって切り替えも可能）
+    const select = document.getElementById("country");
+    const langMap = {
+        'english': 'en-US',
+        'japan': 'ja-JP',
+        'french': 'fr-FR',
+        'spanish': 'es-ES',
+        'german': 'de-DE',
+        'chinese': 'zh-CN',
+        'korean': 'ko-KR',
+        'italian': 'it-IT',
+        'russian': 'ru-RU',
+        'arabic': 'ar-SA',
+    };
+    utter.lang = langMap[select.value] || 'en-US';
+
+    window.speechSynthesis.speak(utter);
+}
+</script>
+
 </body>
 </html>
